@@ -1,10 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:h2o_keeper/generated/l10n.dart';
 import 'package:h2o_keeper/src/services/goal_service.dart';
 import 'package:h2o_keeper/src/services/home_service.dart';
+import 'package:h2o_keeper/src/widgets/base_state.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
@@ -15,47 +15,53 @@ class GoalScreen extends StatefulWidget {
   State<GoalScreen> createState() => _GoalScreenState();
 }
 
-class _GoalScreenState extends State<GoalScreen> {
+class _GoalScreenState extends BasePageState<GoalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(S.current.goal_title, style: TextStyle(color: HexColor("#030002"), fontSize: 18, fontWeight: FontWeight.w500)),
-        leading: CupertinoButton(onPressed: back, child: Image.asset("assets/images/back.png"),),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          _buildCenterView(),
-          _buildSliderView(),
-          _buildButtonView()
-        ],
-      )
-    );
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          title: Text(S.current.goal_title,
+              style: TextStyle(
+                  color: HexColor("#030002"),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500)),
+          leading: CupertinoButton(
+            onPressed: back,
+            child: Image.asset("assets/images/back.png"),
+          ),
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            _buildCenterView(),
+            _buildSliderView(),
+            _buildButtonView()
+          ],
+        ));
   }
 
   @swidget
   Widget _buildCenterView() {
     final goalLogic = context.watch<GoalLogic>();
     return Padding(
-      padding: const EdgeInsets.only(top: 29, left: 106, right: 106),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Center(child: Image.asset("assets/images/goal_1.png")),
-          Center(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Text("${goalLogic.goal}ml",
-                    style: TextStyle(
-                        color: HexColor("#87C100"),
-                        fontSize: 32,
-                        fontWeight: FontWeight.w700)),
-              ))
-        ],
-      )
-    );
+        padding: const EdgeInsets.only(top: 29, left: 106, right: 106),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Center(child: Image.asset("assets/images/goal_1.png")),
+            Center(
+                child: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Text("${goalLogic.goal}ml",
+                  style: TextStyle(
+                      color: HexColor("#87C100"),
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700)),
+            ))
+          ],
+        ));
   }
 
   @swidget
@@ -68,12 +74,17 @@ class _GoalScreenState extends State<GoalScreen> {
         child: Row(
           children: [
             CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: (){
-                goalLogic.goalDecrease();
-              }, 
-              child: Image.asset("assets/images/goal_-.png", width: 24, height: 24,)),
-            Flexible(child: Slider(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  goalLogic.goalDecrease();
+                },
+                child: Image.asset(
+                  "assets/images/goal_-.png",
+                  width: 24,
+                  height: 24,
+                )),
+            Flexible(
+                child: Slider(
               value: goalLogic.progress,
               max: 1.0,
               min: 0.025,
@@ -81,7 +92,7 @@ class _GoalScreenState extends State<GoalScreen> {
               inactiveColor: HexColor("#F0FFCB"),
               onChanged: (value) {
                 final progress = (value * 4000).toInt();
-                goalLogic.updateGoal(progress);            
+                goalLogic.updateGoal(progress);
               },
               onChangeStart: (value) {
                 final progress = (value * 4000).toInt();
@@ -93,11 +104,12 @@ class _GoalScreenState extends State<GoalScreen> {
               },
             )),
             CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: (){
-                goalLogic.goalAdd();
-              }, 
-              child: Image.asset("assets/images/goal+.png", width: 24, height: 24)),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  goalLogic.goalAdd();
+                },
+                child: Image.asset("assets/images/goal+.png",
+                    width: 24, height: 24)),
           ],
         ),
       ),

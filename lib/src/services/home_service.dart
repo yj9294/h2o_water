@@ -1,6 +1,7 @@
-
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
+import 'package:h2o_keeper/src/models/gad_config.dart';
+import 'package:h2o_keeper/src/models/gad_model.dart';
 import 'package:h2o_keeper/src/models/language_item.dart';
 import 'package:h2o_keeper/src/models/record_model.dart';
 import 'package:h2o_keeper/src/models/record_model_ext.dart';
@@ -9,16 +10,46 @@ import 'package:h2o_keeper/src/utils/cache_util.dart';
 import 'package:h2o_keeper/src/utils/notification_util.dart';
 
 class HomeLogic extends ChangeNotifier {
-
   HomeLogic() {
     CacheUtil().getRecords().then((value) => notifyRecords(value));
     CacheUtil().getGoal().then((value) => updateGoal(value));
     CacheUtil().getLanguage().then((value) {
-      LanguageItem item = EnumToString.fromString(LanguageItem.values, value) ?? LanguageItem.english;
+      LanguageItem item = EnumToString.fromString(LanguageItem.values, value) ??
+          LanguageItem.english;
       updateLanguage(item.languageCode);
     });
   }
-  
+
+  // ad mobile
+  Map<TabbarItem, DateTime> nativeImpDate = {};
+  GADNativeModel? _adModel;
+  GADNativeModel get adModel =>
+      _adModel ?? GADNativeModel(GADConfigItem(0, ""));
+  bool get hasNativeAD => adModel.ad != null;
+  void updateADModel(GADModel? model) {
+    if (model == null) {
+      _adModel = null;
+      notifyListeners();
+      return;
+    }
+
+    final adModel = model as GADNativeModel;
+
+    if (adModel.ad == null) {
+      _adModel = null;
+      notifyListeners();
+      return;
+    }
+    DateTime? impD = nativeImpDate[item];
+    if (impD == null || DateTime.now().difference(impD).inSeconds > 10) {
+      nativeImpDate[item] = DateTime.now();
+      _adModel = adModel;
+      notifyListeners();
+    } else {
+      debugPrint("[AD] $item 位原生广告10s间隔 或者是预加载的数据");
+    }
+  }
+
   // 选中的 tabbar
   TabbarItem _item = TabbarItem.drink;
   TabbarItem get item => _item;
@@ -77,7 +108,6 @@ class HomeLogic extends ChangeNotifier {
   }
 
   Future<void> delayedFunction() async {
-
     // 使用 Future.delayed 实现异步延迟
     await Future.delayed(const Duration(milliseconds: 100));
 
@@ -86,5 +116,13 @@ class HomeLogic extends ChangeNotifier {
         NotificationUtil().appendReminder(element);
       }
     });
+  }
+
+  // 用于 插屏广告关闭时候 系统默认是进入前台
+  bool _showInterestitalAD = false;
+  bool get showInterestitalAD => _showInterestitalAD;
+  updateShowInteresttitalAD(bool isShow) {
+    _showInterestitalAD = isShow;
+    notifyListeners();
   }
 }

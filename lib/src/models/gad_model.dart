@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -50,7 +48,7 @@ class GADInterstitialModel extends GADFullScreenModel {
   @override
   void dispose() {
     _ad?.dispose();
-    debugPrint("[AD [$position] dispose 🔥🔥🔥");
+    debugPrint("[AD] [$position] dispose 💧💧💧💧");
   }
 
   @override
@@ -100,7 +98,7 @@ class GADOpenModel extends GADFullScreenModel {
   @override
   void dispose() {
     _ad?.dispose();
-    debugPrint("[AD [$position] dispose 🔥🔥🔥");
+    debugPrint("[AD] [$position] dispose 💧💧💧💧");
   }
 
   @override
@@ -111,7 +109,7 @@ class GADOpenModel extends GADFullScreenModel {
         orientation: AppOpenAd.orientationPortrait,
         request: const AdRequest(),
         adLoadCallback: AppOpenAdLoadCallback(onAdLoaded: (ad) {
-          debugPrint("[AD] [interstitial] load ✅✅✅  ${ad.adUnitId}");
+          debugPrint("[AD] [open] load ✅✅✅  ${ad.adUnitId}");
           _ad = ad;
           loadedDate = DateTime.now();
           completer.complete(true);
@@ -152,6 +150,7 @@ class GADNativeModel extends GADModel {
   @override
   void dispose() {
     ad?.dispose();
+    debugPrint("[AD] [$position] dispose 💧💧💧💧");
   }
 
   @override

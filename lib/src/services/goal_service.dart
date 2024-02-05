@@ -1,15 +1,13 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:h2o_keeper/src/utils/cache_util.dart';
 
 class GoalLogic extends ChangeNotifier {
-
   GoalLogic() {
     CacheUtil().getGoal().then((value) => updateGoal(value));
   }
 
   // 总目标
-  int _goal = 0;
+  int _goal = 100;
   int get goal => _goal;
 
   double get progress {
@@ -19,6 +17,9 @@ class GoalLogic extends ChangeNotifier {
   void updateGoal(int goal) {
     final s = goal ~/ 100;
     _goal = s * 100;
+    if (goal == 0) {
+      goal = 100;
+    }
     notifyListeners();
   }
 
@@ -29,9 +30,8 @@ class GoalLogic extends ChangeNotifier {
   }
 
   void goalDecrease() {
-    int s = goal -100;
+    int s = goal - 100;
     _goal = s <= 100 ? 100 : s;
     notifyListeners();
   }
-
 }

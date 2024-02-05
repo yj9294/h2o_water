@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -92,11 +90,11 @@ class GADLoadModel {
       GADModel model;
       switch (position) {
         case GADPosition.open:
-        model = GADOpenModel(list[preloadIndex]);
+          model = GADOpenModel(list[preloadIndex]);
         case GADPosition.interstitial:
-        model = GADInterstitialModel(list[preloadIndex]);
+          model = GADInterstitialModel(list[preloadIndex]);
         case GADPosition.native:
-        model = GADNativeModel(list[preloadIndex]);
+          model = GADNativeModel(list[preloadIndex]);
       }
 
       // 使用 completer

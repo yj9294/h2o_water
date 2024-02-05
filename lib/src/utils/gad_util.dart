@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -74,10 +72,9 @@ extension GADUtilExt on GADUtil {
   }
 
   // 是否加载完成
-  bool isLoadedInterstitialAD() {
-    final adLoad = adLoads
-        .where((element) => element.position == GADPosition.interstitial)
-        .first;
+  bool isLoadedAD(GADPosition position) {
+    final adLoad =
+        adLoads.where((element) => element.position == position).first;
     return adLoad.loadCompletion;
   }
 
@@ -133,63 +130,63 @@ extension GADUtilExt on GADUtil {
     GADLoadModel loadModel = List<GADLoadModel>.from(
         adLoads.where((element) => element.position == position)).first;
 
-    isADLimited().then((isADLimited) {
-      if (loadModel.loadedList.isNotEmpty && !isADLimited) {
-        // 插屏
-        GADModel ad = loadModel.loadedList.first;
+    final isADLimit = await isADLimited();
 
-        // if (position == GADPosition.interstitial) {
-        //   AppUtil().isPresentedAD = true;
-        // }
-        // 回调
-        ad.callback = GADModelCallback(impressionHandler: () {
-          // 缓存展示
-          updateLimit(GADLimitPosition.show);
-          // 展示
-          appear(position);
-          // 预加载
-          if (position == GADPosition.native) {
-            load(position);
-          }
-        }, clickHandler: () {
-          // 缓存点击
-          updateLimit(GADLimitPosition.click);
-        }, closeHandler: () {
-          // 消失
-          disAppear(position);
-          if (closeHandler != null) {
-            closeHandler();
-          }
-          // if (position == GADPosition.interstitial) {
-          //   AppUtil().isPresentedAD = false;
-          // }
+    if (loadModel.loadedList.isNotEmpty && !isADLimit) {
+      // 插屏
+      GADModel ad = loadModel.loadedList.first;
+
+      // if (position == GADPosition.interstitial) {
+      //   AppUtil().isPresentedAD = true;
+      // }
+      // 回调
+      ad.callback = GADModelCallback(impressionHandler: () {
+        // 缓存展示
+        updateLimit(GADLimitPosition.show);
+        // 展示
+        appear(position);
+        // 预加载
+        if (position == GADPosition.native) {
           load(position);
-        }, errorHandler: () {
-          // 错误展示
-          if (closeHandler != null) {
-            closeHandler();
-          }
-          clean(position);
-          // if (position == GADPosition.interstitial) {
-          //   AppUtil().isPresentedAD = false;
-          // }
-        });
-        ad.present();
-      } else {
-        clean(GADPosition.native);
-        clean(GADPosition.interstitial);
+        }
+      }, clickHandler: () {
+        // 缓存点击
+        updateLimit(GADLimitPosition.click);
+      }, closeHandler: () {
+        // 消失
+        disAppear(position);
         if (closeHandler != null) {
           closeHandler();
         }
+        // if (position == GADPosition.interstitial) {
+        //   AppUtil().isPresentedAD = false;
+        // }
+        load(position);
+      }, errorHandler: () {
+        // 错误展示
+        if (closeHandler != null) {
+          closeHandler();
+        }
+        clean(position);
+        // if (position == GADPosition.interstitial) {
+        //   AppUtil().isPresentedAD = false;
+        // }
+      });
+      ad.present();
+    } else {
+      clean(GADPosition.native);
+      clean(GADPosition.interstitial);
+      if (closeHandler != null) {
+        closeHandler();
       }
-    });
+    }
   }
 
   void appear(GADPosition position) {
     adLoads.where((element) => element.position == position).first.appear();
   }
 
-  void disAppear(GADPosition position) {
+  Future<void> disAppear(GADPosition position) async {
     adLoads.where((element) => element.position == position).first.disAppear();
   }
 
