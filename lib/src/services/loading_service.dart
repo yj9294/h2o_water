@@ -26,7 +26,6 @@ class LoadingLogic extends ChangeNotifier {
     timer?.cancel();
     timer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       final pro = _progress + 0.01 / duration;
-      debugPrint("[ad] $progress");
       if (pro >= 1.0) {
         timer.cancel();
         GADUtil().show(GADPosition.open,

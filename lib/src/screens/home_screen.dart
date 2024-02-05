@@ -99,10 +99,7 @@ class _HomeScreenState extends BasePageState {
         GADUtil().disAppear(GADPosition.native);
         homeLogic.updateADModel(null);
 
-        if (item == TabbarItem.medal || item == TabbarItem.profile) {
-          homeLogic.updateItem(item);
-          return;
-        }
+        homeLogic.updateItem(item);
 
         // 设置 impression
         GADUtil().load(GADPosition.native).then((adModel) {
