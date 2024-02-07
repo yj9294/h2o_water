@@ -37,16 +37,12 @@
 	<true/>
 	<key>FacebookAppID</key>
 	<string>1764994107313796</string>
-	<key>FacebookClientToken</key>
-	<string>165870f2a34f0278f0c16543e2f119be</string>
 	<key>FacebookAutoLogAppEventsEnabled</key>
 	<true/>
+	<key>FacebookClientToken</key>
+	<string>165870f2a34f0278f0c16543e2f119be</string>
 	<key>FacebookDisplayName</key>
 	<string>H2okeeper</string>
-	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3940256099942544~1458002511</string>
-	<key>GADIsAdManagerApp</key>
-	<true/>
 	<key>GADNativeAdValidatorEnabled</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>

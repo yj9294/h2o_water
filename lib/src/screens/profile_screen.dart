@@ -1,18 +1,18 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:h2o_keeper/generated/l10n.dart';
-import 'package:h2o_keeper/src/models/gad_position.dart';
 import 'package:h2o_keeper/src/models/profile_item.dart';
 import 'package:h2o_keeper/src/screens/language_screen.dart';
 import 'package:h2o_keeper/src/screens/privacy_screen.dart';
 import 'package:h2o_keeper/src/screens/reminder_screen.dart';
 import 'package:h2o_keeper/src/screens/tip_screen.dart';
 import 'package:h2o_keeper/src/services/index.dart';
-import 'package:h2o_keeper/src/utils/gad_util.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -31,25 +31,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           width: MediaQuery.sizeOf(context).width,
           height: MediaQuery.sizeOf(context).height,
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                HexColor("#87C100").withOpacity(0.3),
-                profileLogic.isRefresh
-                    ? HexColor("#87C100")
-                    : HexColor("#87C101").withOpacity(0.3)
-              ])),
+            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [HexColor("#87C100").withOpacity(0.3), profileLogic.isRefresh ? HexColor("#87C100") : HexColor("#87C101").withOpacity(0.3)])
+          ),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            elevation: 0,
             backgroundColor: Colors.transparent,
-            title: Text(S.current.profile_title,
-                style: TextStyle(
-                    color: HexColor("#000000").withOpacity(0.87),
-                    fontSize: 22)),
+            title: Text(S.current.profile_title, style: TextStyle(color: HexColor("#000000").withOpacity(0.87), fontSize: 22)),
             centerTitle: true,
           ),
           body: _buildContentView(),
@@ -60,36 +49,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @swidget
   Widget _buildContentView() {
-    return ListView.builder(
-        itemCount: ProfileItem.values.length + 1,
-        itemBuilder: (context, index) {
-          if (index < 4) {
-            return _buildListItem(ProfileItem.values[index]);
-          } else {
-            return _buildStaticListView();
-          }
-        });
+    return ListView.builder(itemCount: ProfileItem.values.length + 1, itemBuilder: (context, index) {
+      if (index < 4) {
+        return _buildListItem(ProfileItem.values[index]);
+      } else {
+        return _buildStaticListView();
+      }
+    });
   }
 
   @swidget
   Widget _buildListItem(ProfileItem item) {
-    final homeLogic = context.watch<HomeLogic>();
     return CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () {
         gotoItemView(item);
-        if (item == ProfileItem.reminder) {
-          // 设置 impression
-          GADUtil().load(GADPosition.native).then((adModel) {
-            if (adModel == null) {
-              return;
-            }
-            GADUtil().show(GADPosition.native).then((value) {
-              // 展示
-              homeLogic.updateADModel(adModel);
-            });
-          });
-        }
       },
       child: Container(
         width: MediaQuery.sizeOf(context).width,
@@ -99,23 +73,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(item.title,
-                style: TextStyle(
-                    color: HexColor("#030002"),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500)),
-            Image.asset(
-              "assets/images/arrow_right.png",
-              width: 20,
-              height: 20,
-            )
+            Text(item.title, style: TextStyle(color: HexColor("#030002"), fontSize: 16, fontWeight: FontWeight.w500)),
+            Image.asset("assets/images/arrow_right.png", width: 20, height: 20,)
           ],
         ),
       ),
     );
   }
 
-  @swidget
+  @swidget 
   Widget _buildStaticListView() {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -125,12 +91,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: Colors.white),
         child: SizedBox(
           height: 300,
-          child: ListView.builder(
-              itemCount: ProfileTipItem.values.length,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return _buildTipsItem(ProfileTipItem.values[index]);
-              }),
+          child: ListView.builder(itemCount: ProfileTipItem.values.length, physics: const NeverScrollableScrollPhysics(), itemBuilder: (context, index) {
+            return _buildTipsItem(ProfileTipItem.values[index]);
+          }),
         ),
       ),
     );
@@ -149,23 +112,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                  width: MediaQuery.sizeOf(context).width - 156,
-                  child: Text(
-                    item.title,
-                    style: TextStyle(fontSize: 14, color: HexColor("#030002")),
-                    maxLines: 2,
-                    softWrap: true,
-                  )),
+              SizedBox(width: MediaQuery.sizeOf(context).width - 156, child: Text(item.title, style: TextStyle(fontSize: 14, color: HexColor("#030002")), maxLines: 2, softWrap: true,)),
               Center(
-                child: Image.asset("assets/images/${item.icon}",
-                    width: 72, height: 72),
+                child: Image.asset("assets/images/${item.icon}", width: 72, height: 72),
               )
             ],
           ),
-          item == ProfileTipItem.when
-              ? const Center()
-              : const SizedBox(height: 2, child: Divider())
+          item == ProfileTipItem.when ? const Center() : const SizedBox(height: 2, child: Divider())
         ],
       ),
     );
@@ -174,36 +127,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void gotoItemView(ProfileItem item) {
     switch (item) {
       case ProfileItem.reminder:
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => ChangeNotifierProvider(
-                    create: (context) => ReminderLogic(),
-                    child: const ReminderScreen())));
+        Navigator.push(context,
+          CupertinoPageRoute(builder: (context) => ChangeNotifierProvider(create: (context) => ReminderLogic(), child: const ReminderScreen())));
       case ProfileItem.language:
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => ChangeNotifierProvider(
-                    create: (context) => LanguageLogic(),
-                    child: const LanguageScreen())));
+        Navigator.push(context,
+          CupertinoPageRoute(builder: (context) => ChangeNotifierProvider(create: (context) => LanguageLogic(), child: const LanguageScreen())));
       case ProfileItem.privacy:
         Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => const PrivacyScreen()));
+          CupertinoPageRoute(builder: (context) => const PrivacyScreen()));
       case ProfileItem.rate:
-        launchAppStore();
-      default:
-        break;
+          launchAppStore();
+      default:break;
     }
   }
 
   void gotoDetaiView(ProfileTipItem item) {
-    Navigator.push(
-        context,
-        CupertinoPageRoute(
-            builder: (context) => ChangeNotifierProvider(
-                create: (context) => TipLogic(item),
-                child: const TipScreen())));
+    Navigator.push(context,
+          CupertinoPageRoute(builder: (context) => ChangeNotifierProvider(create: (context) => TipLogic(item), child: const TipScreen())));
   }
 
   void launchAppStore() async {

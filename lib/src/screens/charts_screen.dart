@@ -1,11 +1,12 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:h2o_keeper/src/models/charts_item.dart';
 import 'package:h2o_keeper/src/models/charts_model.dart';
 import 'package:h2o_keeper/src/screens/history_screen.dart';
-import 'package:h2o_keeper/src/services/index.dart';
+import 'package:h2o_keeper/src/services/charts_service.dart';
+import 'package:h2o_keeper/src/services/history_service.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
@@ -25,8 +26,10 @@ class _ChartsScreenState extends State<ChartsScreen> {
         child: Container(color: HexColor("#B4DB55")),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [_buildTopView(), _buildChartView(), _buildGADView()],
+        children: [
+          _buildTopView(),
+          _buildChartView()
+        ],
       ),
     );
   }
@@ -46,7 +49,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
           CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: () {
-                Navigator.push(
+                 Navigator.push(
                     context,
                     CupertinoPageRoute(
                         builder: (context) => ChangeNotifierProvider(
@@ -108,9 +111,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
         padding: const EdgeInsets.only(bottom: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: chartsLogic.chartsLeft
-              .map((e) => _buildChartLeftItem(e.toString()))
-              .toList(),
+          children: chartsLogic.chartsLeft.map((e) => _buildChartLeftItem(e.toString())).toList(),
         ));
   }
 
@@ -120,14 +121,11 @@ class _ChartsScreenState extends State<ChartsScreen> {
         width: 50,
         height: 40,
         child: Center(
-          child: Text(
-            value,
-            style: TextStyle(
-                color: HexColor("#000000").withOpacity(0.4),
-                fontSize: 14,
-                fontWeight: FontWeight.w400),
-            textAlign: TextAlign.right,
-          ),
+          child: Text(value,
+              style: TextStyle(
+                  color: HexColor("#000000").withOpacity(0.4),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400), textAlign: TextAlign.right,),
         ));
   }
 
@@ -177,9 +175,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
           mainAxisSpacing: 15,
           crossAxisSpacing: 0,
           childAspectRatio: 240.0 / 40,
-          children: chartsLogic.chartsModels
-              .map((e) => _buildRightContentProgressView(e))
-              .toList()),
+          children: chartsLogic.chartsModels.map((e) => _buildRightContentProgressView(e)).toList()),
     );
   }
 
@@ -197,7 +193,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
     );
   }
 
-  @swidget
+  @swidget 
   Widget _buildProgressItem(double progress) {
     return Padding(
       padding: const EdgeInsets.only(top: 19.5, bottom: 19.5),
@@ -227,28 +223,9 @@ class _ChartsScreenState extends State<ChartsScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(unit,
-              style: TextStyle(
-                  color: HexColor("#000000"),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400)),
+          Text(unit, style: TextStyle(color: HexColor("#000000"), fontSize: 12, fontWeight: FontWeight.w400)),
         ],
       ),
     );
-  }
-
-  @swidget
-  Widget _buildGADView() {
-    final homeLogic = context.watch<HomeLogic>();
-    final width = MediaQuery.sizeOf(context).width - 40;
-    final height = width * 116.0 / 335.0;
-    return Padding(
-        padding: const EdgeInsets.only(bottom: 20),
-        child: SizedBox(
-            width: width,
-            height: height,
-            child: homeLogic.hasNativeAD
-                ? AdWidget(ad: homeLogic.adModel.ad!)
-                : const Center()));
   }
 }

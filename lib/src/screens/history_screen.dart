@@ -15,12 +15,11 @@ class HistoryScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends BasePageState<HistoryScreen> {
+class _HistoryScreenState extends BasePageState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(S.current.history_title,
             style: TextStyle(

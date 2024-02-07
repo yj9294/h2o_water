@@ -44,8 +44,7 @@ dependencies:
   flutter_local_notifications: null
   permission_handler:
   launch_review:
-  # flutter_facebook_sdk:
-  google_mobile_ads: ^3.0.0
+  flutter_facebook_sdk:
   flutter_localizations:
     sdk: flutter
 
@@ -105,6 +104,5 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/images/
-    - assets/data/
 flutter_intl:
   enabled: true
