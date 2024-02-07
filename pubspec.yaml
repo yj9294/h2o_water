@@ -45,7 +45,7 @@ dependencies:
   permission_handler:
   launch_review:
   # flutter_facebook_sdk:
-  google_mobile_ads:
+  google_mobile_ads: ^3.0.0
   flutter_localizations:
     sdk: flutter
 

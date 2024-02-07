@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -17,7 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   await NotificationUtil().register();
-  await  GADUtil().requestConfig();
+  await GADUtil().requestConfig();
 
   Permission.appTrackingTransparency;
   runApp(MultiProvider(providers: [
@@ -30,7 +29,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-    const MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<StatefulWidget> createState() => _MyAppState();
@@ -68,7 +67,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class ContentScreen extends StatefulWidget {
-    const ContentScreen({super.key});
+  const ContentScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _ContentScreenState();
@@ -78,6 +77,12 @@ class _ContentScreenState extends State<ContentScreen> {
   @override
   void initState() {
     super.initState();
+    final loadingLogic = context.read<LoadingLogic>();
+    Future.delayed(Duration.zero, () {
+      if (mounted) {
+        loadingLogic.startLoading(context);
+      }
+    });
   }
 
   @override
@@ -88,8 +93,6 @@ class _ContentScreenState extends State<ContentScreen> {
   @override
   Widget build(BuildContext context) {
     final loadingLogic = context.watch<LoadingLogic>();
-    return loadingLogic.isLoading
-        ? const LoadingScreen()
-        : const HomeScreen();
+    return loadingLogic.isLoading ? const LoadingScreen() : const HomeScreen();
   }
 }

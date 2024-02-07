@@ -1,4 +1,5 @@
 import UIKit
+import google_mobile_ads
 import Flutter
 import UserNotifications
 
@@ -12,6 +13,7 @@ import UserNotifications
         UNUserNotificationCenter.current().delegate = self
       }
     GeneratedPluginRegistrant.register(with: self)
+          FLTGoogleMobileAdsPlugin.registerNativeAdFactory(self, factoryId: "small.nativeAd", nativeAdFactory: GADNativeFactory())
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
