@@ -43,6 +43,7 @@ dependencies:
   functional_widget_annotation: null
   flutter_local_notifications: null
   permission_handler:
+  app_tracking_transparency:
   launch_review:
   flutter_facebook_sdk:
   flutter_localizations:
