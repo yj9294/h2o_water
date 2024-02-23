@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
@@ -37,6 +38,12 @@ class _HomeScreenState extends BasePageState {
       }
       homeLogic.updateEnterBackground(false);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    AppTrackingTransparency.requestTrackingAuthorization();
   }
 
   @override

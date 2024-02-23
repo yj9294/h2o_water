@@ -44,7 +44,8 @@ dependencies:
   flutter_local_notifications: null
   permission_handler:
   launch_review:
-  # flutter_facebook_sdk:
+  flutter_facebook_sdk:
+  app_tracking_transparency:
   google_mobile_ads: ^3.0.0
   flutter_localizations:
     sdk: flutter

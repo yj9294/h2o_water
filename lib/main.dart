@@ -7,7 +7,6 @@ import 'package:h2o_keeper/src/screens/loading_screen.dart';
 import 'package:h2o_keeper/src/services/index.dart';
 import 'package:h2o_keeper/src/utils/gad_util.dart';
 import 'package:h2o_keeper/src/utils/notification_util.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
@@ -17,8 +16,6 @@ void main() async {
   MobileAds.instance.initialize();
   await NotificationUtil().register();
   await GADUtil().requestConfig();
-
-  Permission.appTrackingTransparency;
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => LoadingLogic()),
     ChangeNotifierProvider(create: (context) => HomeLogic()),
