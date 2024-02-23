@@ -1,4 +1,4 @@
-
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
@@ -19,6 +19,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends BasePageState {
+  initState() {
+    super.initState();
+    AppTrackingTransparency.requestTrackingAuthorization();
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -55,7 +60,7 @@ class _HomeScreenState extends BasePageState {
     final homeLogic = context.watch<HomeLogic>();
     if (homeLogic.item == TabbarItem.drink) {
       return const Flexible(child: DrinkScreen());
-    } else if(homeLogic.item == TabbarItem.charts) {
+    } else if (homeLogic.item == TabbarItem.charts) {
       return const Flexible(child: ChartsScreen());
     } else if (homeLogic.item == TabbarItem.medal) {
       return const Flexible(child: MedalScreen());
@@ -68,14 +73,14 @@ class _HomeScreenState extends BasePageState {
   Widget _tabbarView(TabbarItem item) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
-      child:  Container(
+      child: Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(50)),
-          color: HexColor("#E5F2C6")
-        ),
+            borderRadius: const BorderRadius.all(Radius.circular(50)),
+            color: HexColor("#E5F2C6")),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: TabbarItem.values.map((e) => _tabbarItem(e, e == item)).toList(),
+          children:
+              TabbarItem.values.map((e) => _tabbarItem(e, e == item)).toList(),
         ),
       ),
     );
@@ -84,14 +89,14 @@ class _HomeScreenState extends BasePageState {
   Widget _tabbarItem(TabbarItem item, bool isSelected) {
     final homeLogic = context.watch<HomeLogic>();
     return CupertinoButton(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 7, bottom: 7),
-        onPressed: () => homeLogic.updateItem(item),
-        child: Center(
-          child: Image.asset(
-              "assets/images/${isSelected ? item.selectedIcon : item.icon}.png",
-              width: 56,
-              height: 36),
-        ),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 7, bottom: 7),
+      onPressed: () => homeLogic.updateItem(item),
+      child: Center(
+        child: Image.asset(
+            "assets/images/${isSelected ? item.selectedIcon : item.icon}.png",
+            width: 56,
+            height: 36),
+      ),
     );
   }
 }

@@ -1,5 +1,3 @@
-
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:h2o_keeper/generated/l10n.dart';
@@ -7,7 +5,6 @@ import 'package:h2o_keeper/src/screens/home_screen.dart';
 import 'package:h2o_keeper/src/screens/loading_screen.dart';
 import 'package:h2o_keeper/src/services/index.dart';
 import 'package:h2o_keeper/src/utils/notification_util.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
@@ -15,8 +12,6 @@ RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationUtil().register();
-  await AppTrackingTransparency.requestTrackingAuthorization();
-  Permission.appTrackingTransparency;
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => LoadingLogic()),
     ChangeNotifierProvider(create: (context) => HomeLogic()),
@@ -27,7 +22,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-    const MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<StatefulWidget> createState() => _MyAppState();
@@ -65,7 +60,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class ContentScreen extends StatefulWidget {
-    const ContentScreen({super.key});
+  const ContentScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _ContentScreenState();
@@ -85,8 +80,6 @@ class _ContentScreenState extends State<ContentScreen> {
   @override
   Widget build(BuildContext context) {
     final loadingLogic = context.watch<LoadingLogic>();
-    return loadingLogic.isLoading
-        ? const LoadingScreen()
-        : const HomeScreen();
+    return loadingLogic.isLoading ? const LoadingScreen() : const HomeScreen();
   }
 }
